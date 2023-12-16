@@ -12,6 +12,7 @@ public class FloorGenerator : MonoBehaviour
     // Array of visual representation of a single cell of a grid
     private FloorTile[,] floorTiles;
 
+    [SerializeField] Transform floor;
     private void Awake()
     {
         if (Instance != null)
@@ -27,6 +28,7 @@ public class FloorGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (floor != null) return;
         LevelGrid levelGrid = LevelGrid.Instance;
         int levelGridWidth = levelGrid.GetWidth();
         int levelGridHeight = levelGrid.GetHeight();

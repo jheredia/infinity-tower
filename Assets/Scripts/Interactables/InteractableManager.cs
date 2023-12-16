@@ -23,6 +23,7 @@ public class InteractableManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        interactables = new List<IInteractable>();
         float chanceForInteractable = 5f;
         for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
         {
@@ -32,7 +33,7 @@ public class InteractableManager : MonoBehaviour
                 if (WallGenerator.Instance.GetWallAtGridPosition(gridPosition) != null) continue;
                 if (Random.Range(0, 101) <= chanceForInteractable)
                 {
-                    SetInteractableAtGridPosition(gridPosition, GetRandomInteractable());
+                    if (interactables.Count > 0) SetInteractableAtGridPosition(gridPosition, GetRandomInteractable());
                 }
             }
         }
@@ -48,7 +49,7 @@ public class InteractableManager : MonoBehaviour
 
     public IInteractable GetRandomInteractable()
     {
-        int index = Mathf.RoundToInt(Random.Range(0, interactables.Count()));
+        int index = Mathf.RoundToInt(Random.Range(0, interactables.Count));
         return interactables[index];
     }
 

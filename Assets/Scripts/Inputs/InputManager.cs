@@ -1,57 +1,53 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.InputSystem;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-// public class InputManager : MonoBehaviour
-// {
-//     public static InputManager Instance { get; private set; }
-//     private PlayerInputActions playerInputActions;
-//     private void Awake()
-//     {
-//         if (Instance != null)
-//         {
-//             Debug.LogError($"Multiple instances of {GetType().Name} present {transform} - {Instance}");
-//             Destroy(gameObject);
-//             return;
-//         }
-//         Instance = this;
+/// <summary>
+/// Singleton class that gives access to all the actions implemented in the input action system
+/// </summary>
+public class InputManager : MonoBehaviour
+{
+    public static InputManager Instance { get; private set; }
 
-//         playerInputActions = new PlayerInputActions();
+    /// <summary>
+    /// Input action asset
+    /// </summary>
+    private PlayerInputActions playerInputActions;
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError($"Multiple instances of {GetType().Name} present {transform} - {Instance}");
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
 
-//         playerInputActions.Player.Enable();
-//     }
+        // Create and enable the input actions asset
+        playerInputActions = new PlayerInputActions();
 
-//     public Vector2 GetMouseScreenPosition()
-//     {
+        playerInputActions.Player.Enable();
+    }
 
-//         return Mouse.current.position.ReadValue();
-//     }
+    /**
+    *    Mouse related actions and inputs
+    */
 
-//     public bool GetKey(KeyCode key)
-//     {
-//         return Input.GetKey(key);
-//     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetMouseScreenPosition() => Mouse.current.position.ReadValue();
 
-//     public bool GetKeyUp(KeyCode key)
-//     {
-//         return Input.GetKeyUp(key);
-//     }
+    public Vector2 GetCameraMoveVector() => playerInputActions.Player.CameraMovement.ReadValue<Vector2>();
 
-//     public Vector2 GetCameraMoveVector() => playerInputActions.Player.CameraMovement.ReadValue<Vector2>();
+    public bool IsLeftMouseButtonDownThisFrame() => playerInputActions.Player.LeftClick.WasPressedThisFrame();
 
+    public bool IsRightMouseButtonDownThisFrame() => playerInputActions.Player.RightClick.WasPressedThisFrame();
 
-//     public bool IsLeftMouseButtonDownThisFrame() => playerInputActions.Player.LeftClick.WasPressedThisFrame();
+    public float GetCameraRotationAmount() => playerInputActions.Player.CameraRotation.ReadValue<float>();
 
-//     public bool IsRightMouseButtonDownThisFrame() => playerInputActions.Player.RightClick.WasPressedThisFrame();
+    public float GetCameraZoomAmount() => playerInputActions.Player.CameraZoom.ReadValue<float>();
 
-//     public bool GetMouseButtonUp(int button)
-//     {
-//         return Input.GetMouseButtonUp(button);
-//     }
-
-//     public float GetCameraRotationAmount() => playerInputActions.Player.CameraRotation.ReadValue<float>();
-
-//     public float GetCameraZoomAmount() => playerInputActions.Player.CameraZoom.ReadValue<float>();
-
-// }
+}
